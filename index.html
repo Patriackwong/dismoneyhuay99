@@ -14,24 +14,34 @@
       <input type="text" id="account" name="account" required><br><br>
       <button type="submit">ส่งคำขอโอนเงิน</button>
     </form>
+
     <script>
       document.getElementById('transferForm').addEventListener('submit', function(event) {
         event.preventDefault();
-        
-        // เก็บข้อมูลจากฟอร์ม
+
         var formData = new FormData(document.getElementById('transferForm'));
         var data = {
           'name': formData.get('name'),
           'amount': formData.get('amount'),
           'account': formData.get('account')
         };
-        
-        // เรียกใช้ฟังก์ชันใน Apps Script
-        google.script.run
-          .withSuccessHandler(function(response) {
-            alert(response); // แจ้งข้อความตอบกลับเมื่อข้อมูลถูกบันทึก
-          })
-          .logTransfer(data); // ส่งข้อมูลไปยังฟังก์ชัน logTransfer ใน Apps Script
+
+        // ส่งข้อมูลไปยัง Google Apps Script Web App
+        var url = 'https://script.google.com/macros/s/AKfycbwmZDkq5sztuEh-c2sBEXT2ARvR7g3fCCLYBb9x-q2_HC_HSdXDZ67tI0QLE7gtlgKJGQ/exec'; // URL ของ Google Apps Script Web App
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(responseData => {
+          alert(responseData.message); // แสดงข้อความตอบกลับจาก Google Apps Script
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
       });
     </script>
   </body>
