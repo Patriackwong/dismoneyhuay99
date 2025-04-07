@@ -17,6 +17,8 @@
     <script>
       document.getElementById('transferForm').addEventListener('submit', function(event) {
         event.preventDefault();
+        
+        // เก็บข้อมูลจากฟอร์ม
         var formData = new FormData(document.getElementById('transferForm'));
         var data = {
           'name': formData.get('name'),
@@ -24,9 +26,12 @@
           'account': formData.get('account')
         };
         
-        google.script.run.withSuccessHandler(function(response) {
-          alert(response);
-        }).logTransfer(data);
+        // เรียกใช้ฟังก์ชันใน Apps Script
+        google.script.run
+          .withSuccessHandler(function(response) {
+            alert(response); // แจ้งข้อความตอบกลับเมื่อข้อมูลถูกบันทึก
+          })
+          .logTransfer(data); // ส่งข้อมูลไปยังฟังก์ชัน logTransfer ใน Apps Script
       });
     </script>
   </body>
