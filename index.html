@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ขอโอนเงิน</title>
+  </head>
+  <body>
+    <h2>กรอกข้อมูลการขอโอนเงิน</h2>
+    <form id="transferForm">
+      <label for="name">ชื่อผู้ขอโอน:</label><br>
+      <input type="text" id="name" name="name" required><br><br>
+      <label for="amount">จำนวนเงิน:</label><br>
+      <input type="number" id="amount" name="amount" required><br><br>
+      <label for="account">บัญชีผู้รับ:</label><br>
+      <input type="text" id="account" name="account" required><br><br>
+      <button type="submit">ส่งคำขอโอนเงิน</button>
+    </form>
+    <script>
+      document.getElementById('transferForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var formData = new FormData(document.getElementById('transferForm'));
+        var data = {
+          'name': formData.get('name'),
+          'amount': formData.get('amount'),
+          'account': formData.get('account')
+        };
+        
+        google.script.run.withSuccessHandler(function(response) {
+          alert(response);
+        }).logTransfer(data);
+      });
+    </script>
+  </body>
+</html>
