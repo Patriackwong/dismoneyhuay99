@@ -31,9 +31,9 @@
         fetch(url, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json', // ตั้งค่าเป็น JSON
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify(data) // ส่งข้อมูลในรูปแบบ JSON
         })
         .then(response => response.json())
         .then(responseData => {
