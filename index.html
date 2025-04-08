@@ -55,9 +55,16 @@
       // ดึงข้อมูลโปรไฟล์ของผู้ใช้ LINE
       function getProfile() {
         liff.getProfile().then(profile => {
-          document.getElementById("name").value = profile.displayName;  // ตั้งชื่อผู้ขอโอนเป็นชื่อผู้ใช้ LINE
+          // ตั้งชื่อผู้ขอโอนเป็นชื่อผู้ใช้ LINE
+          document.getElementById("name").value = profile.displayName;
+          
+          // ถ้าไม่ได้ดึงข้อมูลโปรไฟล์ได้ จะให้กรอกชื่อเอง
+          document.getElementById("name").readOnly = true;
         }).catch((err) => {
           console.error('Error getting profile', err);
+          // ถ้าดึงข้อมูลโปรไฟล์ไม่ได้ ให้ผู้ใช้กรอกชื่อเอง
+          alert('ไม่พบข้อมูลโปรไฟล์ LINE กรุณากรอกชื่อเอง');
+          document.getElementById("name").readOnly = false;
         });
       }
 
