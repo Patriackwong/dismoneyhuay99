@@ -10,7 +10,6 @@
     <h2>กรอกข้อมูลการขอโอนเงิน</h2>
     <form id="transferForm">
       <label for="name">ชื่อผู้ขอโอน:</label><br>
-      <!-- แสดงชื่อผู้ขอโอนจาก LINE profile โดยใช้ div แทน input -->
       <div id="name" name="name" required style="font-weight: bold;">กำลังดึงข้อมูล...</div><br><br>
 
       <label for="amount">จำนวนเงิน:</label><br>
@@ -42,10 +41,12 @@
       function initializeLiff() {
         liff.init({ liffId: "2007224902-KBB1MQ26" })
           .then(() => {
+            // ตรวจสอบว่าได้ล็อกอินแล้วหรือยัง
             if (liff.isLoggedIn()) {
-              getProfile();  // ดึงข้อมูลโปรไฟล์ผู้ใช้
+              getProfile();  // ถ้าล็อกอินแล้วดึงข้อมูลโปรไฟล์
             } else {
-              liff.login();  // ถ้ายังไม่ได้ล็อกอินให้ล็อกอินก่อน
+              // ถ้าไม่ได้ล็อกอิน ให้ทำการล็อกอิน
+              liff.login();
             }
           })
           .catch((err) => {
