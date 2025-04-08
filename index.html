@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ขอโอนเงิน</title>
   </head>
   <body>
@@ -19,6 +21,7 @@
       document.getElementById('transferForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
+        // เก็บข้อมูลจากฟอร์ม
         var formData = new FormData(document.getElementById('transferForm'));
         var data = {
           'name': formData.get('name'),
@@ -26,23 +29,22 @@
           'account': formData.get('account')
         };
 
-        // ส่งข้อมูลไปยัง Google Apps Script Web App
-        var url = 'https://script.google.com/macros/s/AKfycbwMMLcw8Y8rK3aI6rhBztfw3cnJKM-rgiHVG_CG_ASbSX3Kn_NZok9rOlFZkReFXlG0Zw/exec'; // URL ของ Google Apps Script Web App
-        fetch('https://script.google.com/macros/s/AKfycbwMMLcw8Y8rK3aI6rhBztfw3cnJKM-rgiHVG_CG_ASbSX3Kn_NZok9rOlFZkReFXlG0Zw/exec', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json', // ตั้งค่าเป็น JSON
-  },
-  body: JSON.stringify(data) // ส่งข้อมูลในรูปแบบ JSON
-})
-.then(response => response.json())
-.then(responseData => {
-  alert(responseData.message); // แสดงข้อความตอบกลับจาก Google Apps Script
-})
-.catch(error => {
-  console.error('Error:', error);
-});
+        // สร้าง URL ของ Google Apps Script Web App และส่งข้อมูลผ่าน query parameters
+        var url = 'https://script.google.com/macros/s/AKfycbwMMLcw8Y8rK3aI6rhBztfw3cnJKM-rgiHVG_CG_ASbSX3Kn_NZok9rOlFZkReFXlG0Zw/exec' + 
+                  '?name=' + encodeURIComponent(data.name) + 
+                  '&amount=' + encodeURIComponent(data.amount) + 
+                  '&account=' + encodeURIComponent(data.account);
 
+        // ส่งข้อมูลไปยัง Google Apps Script Web App ผ่าน GET request
+        fetch(url)
+          .then(response => response.json()) // แปลงข้อมูลที่ได้รับจาก Google Apps Script เป็น JSON
+          .then(responseData => {
+            alert(responseData.message); // แสดงข้อความตอบกลับจาก Google Apps Script
+          })
+          .catch(error => {
+            console.error('Error:', error); // หากเกิดข้อผิดพลาดจะไปที่นี้
+            alert('เกิดข้อผิดพลาดในการส่งข้อมูล');
+          });
       });
     </script>
   </body>
