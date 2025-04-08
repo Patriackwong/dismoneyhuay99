@@ -10,7 +10,8 @@
     <h2>กรอกข้อมูลการขอโอนเงิน</h2>
     <form id="transferForm">
       <label for="name">ชื่อผู้ขอโอน:</label><br>
-      <input type="text" id="name" name="name" required readonly><br><br>
+      <!-- แสดงชื่อผู้ขอโอนจาก LINE profile โดยใช้ div แทน input -->
+      <div id="name" name="name" required style="font-weight: bold;">กำลังดึงข้อมูล...</div><br><br>
 
       <label for="amount">จำนวนเงิน:</label><br>
       <input type="number" id="amount" name="amount" required><br><br>
@@ -25,7 +26,7 @@
         <option value="bbd">ธนาคารกรุงเทพ</option>
         <option value="bbl">ธนาคารกรุงศรีอยุธยา</option>
         <option value="tmb">ธนาคารทหารไทยธนชาต</option>
-        <option value="other">อื่น ๆ (กรุณากรอก)</option> <!-- ตัวเลือกกรอกเอง -->
+        <option value="other">อื่น ๆ (กรุณากรอก)</option>
       </select><br><br>
 
       <div id="customBankDiv" style="display: none;">
@@ -55,16 +56,11 @@
       // ดึงข้อมูลโปรไฟล์ของผู้ใช้ LINE
       function getProfile() {
         liff.getProfile().then(profile => {
-          // ตั้งชื่อผู้ขอโอนเป็นชื่อผู้ใช้ LINE
-          document.getElementById("name").value = profile.displayName;
-          
-          // ถ้าไม่ได้ดึงข้อมูลโปรไฟล์ได้ จะให้กรอกชื่อเอง
-          document.getElementById("name").readOnly = true;
+          // แสดงชื่อผู้ขอโอนจาก LINE profile
+          document.getElementById("name").textContent = profile.displayName;
         }).catch((err) => {
           console.error('Error getting profile', err);
-          // ถ้าดึงข้อมูลโปรไฟล์ไม่ได้ ให้ผู้ใช้กรอกชื่อเอง
-          alert('ไม่พบข้อมูลโปรไฟล์ LINE กรุณากรอกชื่อเอง');
-          document.getElementById("name").readOnly = false;
+          document.getElementById("name").textContent = "ไม่สามารถดึงข้อมูลโปรไฟล์ได้";
         });
       }
 
@@ -84,7 +80,7 @@
 
         var formData = new FormData(document.getElementById('transferForm'));
         var data = {
-          'name': formData.get('name'),
+          'name': document.getElementById("name").textContent, // ชื่อผู้ขอโอนจาก LINE profile
           'amount': formData.get('amount'),
           'account': formData.get('account'),
           'bank': formData.get('bank'),
