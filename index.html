@@ -4,36 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ขอโอนเงิน</title>
+    <script src="https://static.line-scdn.net/liff/2.1/sdk.js"></script>
   </head>
   <body>
     <h2>กรอกข้อมูลการขอโอนเงิน</h2>
     <form id="transferForm">
       <label for="name">ชื่อผู้ขอโอน:</label><br>
-      <input type="text" id="name" name="name" required><br><br>
+      <input type="text" id="name" name="name" required readonly><br><br>
+
       <label for="amount">จำนวนเงิน:</label><br>
       <input type="number" id="amount" name="amount" required><br><br>
+
       <label for="account">บัญชีผู้รับ:</label><br>
       <input type="text" id="account" name="account" required><br><br>
+
+      <label for="bank">เลือกธนาคาร:</label><br>
+      <select id="bank" name="bank" required>
+        <option value="scb">ธนาคารไทยพาณิชย์</option>
+        <option value="kbank">ธนาคารกสิกรไทย</option>
+        <option value="bbd">ธนาคารกรุงเทพ</option>
+        <option value="bbl">ธนาคารกรุงศรีอยุธยา</option>
+        <option value="tmb">ธนาคารทหารไทยธนชาต</option>
+        <!-- เพิ่มธนาคารอื่น ๆ ที่มีให้บริการในประเทศไทย -->
+      </select><br><br>
+
       <button type="submit">ส่งคำขอโอนเงิน</button>
     </form>
 
     <script>
+      // เริ่มต้น LIFF
+      function initializeLiff() {
+        liff.init({ liffId: "2007224902-KBB1MQ26" })
+          .then(() => {
+            if (liff.isLoggedIn()) {
+              getProfile();  // ดึงข้อมูลโปรไฟล์ผู้ใช้
+            } else {
+              liff.login();  // ถ้ายังไม่ได้ล็อกอินให้ล็อกอินก่อน
+            }
+          })
+          .catch((err) => {
+            console.error('LIFF initialization failed', err);
+          });
+      }
+
+      // ดึงข้อมูลโปรไฟล์ของผู้ใช้ LINE
+      function getProfile() {
+        liff.getProfile().then(profile => {
+          document.getElementById("name").value = profile.displayName;  // ตั้งชื่อผู้ขอโอนเป็นชื่อผู้ใช้ LINE
+        }).catch((err) => {
+          console.error('Error getting profile', err);
+        });
+      }
+
+      // เมื่อกดส่งข้อมูลฟอร์ม
       document.getElementById('transferForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // เก็บข้อมูลจากฟอร์ม
         var formData = new FormData(document.getElementById('transferForm'));
         var data = {
           'name': formData.get('name'),
           'amount': formData.get('amount'),
-          'account': formData.get('account')
+          'account': formData.get('account'),
+          'bank': formData.get('bank')
         };
 
         // สร้าง URL ของ Google Apps Script Web App และส่งข้อมูลผ่าน query parameters
         var url = 'https://script.google.com/macros/s/AKfycbwMMLcw8Y8rK3aI6rhBztfw3cnJKM-rgiHVG_CG_ASbSX3Kn_NZok9rOlFZkReFXlG0Zw/exec' + 
                   '?name=' + encodeURIComponent(data.name) + 
                   '&amount=' + encodeURIComponent(data.amount) + 
-                  '&account=' + encodeURIComponent(data.account);
+                  '&account=' + encodeURIComponent(data.account) +
+                  '&bank=' + encodeURIComponent(data.bank);
 
         // ส่งข้อมูลไปยัง Google Apps Script Web App ผ่าน GET request
         fetch(url)
@@ -46,6 +86,11 @@
             alert('เกิดข้อผิดพลาดในการส่งข้อมูล');
           });
       });
+
+      // เรียกใช้ฟังก์ชัน initializeLiff เมื่อโหลดหน้า
+      window.onload = function() {
+        initializeLiff();
+      }
     </script>
   </body>
 </html>
