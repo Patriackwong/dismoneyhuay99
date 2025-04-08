@@ -15,7 +15,7 @@
       <label for="amount">จำนวนเงิน:</label><br>
       <input type="number" id="amount" name="amount" required><br><br>
 
-      <label for="account">บัญชีผู้รับ:</label><br>
+      <label for="account">เลขบัญชีผู้รับ:</label><br>
       <input type="text" id="account" name="account" required><br><br>
 
       <label for="bank">เลือกธนาคาร:</label><br>
@@ -25,8 +25,13 @@
         <option value="bbd">ธนาคารกรุงเทพ</option>
         <option value="bbl">ธนาคารกรุงศรีอยุธยา</option>
         <option value="tmb">ธนาคารทหารไทยธนชาต</option>
-        <!-- เพิ่มธนาคารอื่น ๆ ที่มีให้บริการในประเทศไทย -->
+        <option value="other">อื่น ๆ (กรุณากรอก)</option> <!-- ตัวเลือกกรอกเอง -->
       </select><br><br>
+
+      <div id="customBankDiv" style="display: none;">
+        <label for="customBank">กรอกชื่อธนาคาร:</label><br>
+        <input type="text" id="customBank" name="customBank"><br><br>
+      </div>
 
       <button type="submit">ส่งคำขอโอนเงิน</button>
     </form>
@@ -56,6 +61,16 @@
         });
       }
 
+      // ฟังก์ชันเพื่อเปลี่ยนแปลงการแสดงผลช่องกรอกธนาคาร
+      document.getElementById('bank').addEventListener('change', function() {
+        var bankSelect = document.getElementById('bank').value;
+        if (bankSelect === 'other') {
+          document.getElementById('customBankDiv').style.display = 'block'; // แสดงช่องกรอกชื่อธนาคาร
+        } else {
+          document.getElementById('customBankDiv').style.display = 'none'; // ซ่อนช่องกรอกชื่อธนาคาร
+        }
+      });
+
       // เมื่อกดส่งข้อมูลฟอร์ม
       document.getElementById('transferForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -65,7 +80,8 @@
           'name': formData.get('name'),
           'amount': formData.get('amount'),
           'account': formData.get('account'),
-          'bank': formData.get('bank')
+          'bank': formData.get('bank'),
+          'customBank': formData.get('customBank') // ใช้ค่าที่กรอกหากเลือก 'อื่น ๆ'
         };
 
         // สร้าง URL ของ Google Apps Script Web App และส่งข้อมูลผ่าน query parameters
@@ -73,7 +89,8 @@
                   '?name=' + encodeURIComponent(data.name) + 
                   '&amount=' + encodeURIComponent(data.amount) + 
                   '&account=' + encodeURIComponent(data.account) +
-                  '&bank=' + encodeURIComponent(data.bank);
+                  '&bank=' + encodeURIComponent(data.bank) + 
+                  (data.customBank ? '&customBank=' + encodeURIComponent(data.customBank) : ''); // ถ้ามีการกรอกชื่อธนาคารเอง
 
         // ส่งข้อมูลไปยัง Google Apps Script Web App ผ่าน GET request
         fetch(url)
