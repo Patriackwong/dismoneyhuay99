@@ -8,52 +8,45 @@
   </head>
   <body>
     <h2>กรอกข้อมูลการขอโอนเงิน</h2>
+    <form id="transferForm">
+      <label for="name">ชื่อผู้ขอโอน:</label><br>
+      <div id="name" name="name" required style="font-weight: bold;">กำลังดึงข้อมูล...</div><br><br>
 
-    <!-- แสดงปุ่ม Login หากผู้ใช้ยังไม่ได้ล็อกอิน -->
-    <div id="loginDiv">
-      <button onclick="loginWithLine()">Login with LINE</button>
-    </div>
+      <label for="amount">จำนวนเงิน:</label><br>
+      <input type="number" id="amount" name="amount" required><br><br>
 
-    <!-- ฟอร์มที่จะแสดงหลังจากล็อกอินแล้ว -->
-    <div id="transferFormDiv" style="display: none;">
-      <form id="transferForm">
-        <label for="name">ชื่อผู้ขอโอน:</label><br>
-        <div id="name" name="name" required style="font-weight: bold;">กำลังดึงข้อมูล...</div><br><br>
+      <label for="account">เลขบัญชีผู้รับ:</label><br>
+      <input type="text" id="account" name="account" required><br><br>
 
-        <label for="amount">จำนวนเงิน:</label><br>
-        <input type="number" id="amount" name="amount" required><br><br>
+      <label for="bank">เลือกธนาคาร:</label><br>
+      <select id="bank" name="bank" required>
+        <option value="scb">ธนาคารไทยพาณิชย์</option>
+        <option value="kbank">ธนาคารกสิกรไทย</option>
+        <option value="bbd">ธนาคารกรุงเทพ</option>
+        <option value="bbl">ธนาคารกรุงศรีอยุธยา</option>
+        <option value="tmb">ธนาคารทหารไทยธนชาต</option>
+        <option value="other">อื่น ๆ (กรุณากรอก)</option>
+      </select><br><br>
 
-        <label for="account">เลขบัญชีผู้รับ:</label><br>
-        <input type="text" id="account" name="account" required><br><br>
+      <div id="customBankDiv" style="display: none;">
+        <label for="customBank">กรอกชื่อธนาคาร:</label><br>
+        <input type="text" id="customBank" name="customBank"><br><br>
+      </div>
 
-        <label for="bank">เลือกธนาคาร:</label><br>
-        <select id="bank" name="bank" required>
-          <option value="scb">ธนาคารไทยพาณิชย์</option>
-          <option value="kbank">ธนาคารกสิกรไทย</option>
-          <option value="bbd">ธนาคารกรุงเทพ</option>
-          <option value="bbl">ธนาคารกรุงศรีอยุธยา</option>
-          <option value="tmb">ธนาคารทหารไทยธนชาต</option>
-          <option value="other">อื่น ๆ (กรุณากรอก)</option>
-        </select><br><br>
-
-        <div id="customBankDiv" style="display: none;">
-          <label for="customBank">กรอกชื่อธนาคาร:</label><br>
-          <input type="text" id="customBank" name="customBank"><br><br>
-        </div>
-
-        <button type="submit">ส่งคำขอโอนเงิน</button>
-      </form>
-    </div>
+      <button type="submit">ส่งคำขอโอนเงิน</button>
+    </form>
 
     <script>
       // เริ่มต้น LIFF
       function initializeLiff() {
         liff.init({ liffId: "2007224902-KBB1MQ26" })
           .then(() => {
+            // ตรวจสอบว่าได้ล็อกอินแล้วหรือยัง
             if (liff.isLoggedIn()) {
               getProfile();  // ถ้าล็อกอินแล้วดึงข้อมูลโปรไฟล์
             } else {
-              document.getElementById("loginDiv").style.display = "block"; // แสดงปุ่ม Login
+              // ถ้าไม่ได้ล็อกอิน ให้ทำการล็อกอิน
+              liff.login();
             }
           })
           .catch((err) => {
@@ -61,20 +54,11 @@
           });
       }
 
-      // ฟังก์ชันที่เรียกใช้เมื่อคลิกปุ่ม Login
-      function loginWithLine() {
-        liff.login();  // ทำการล็อกอินผ่าน LINE
-      }
-
       // ดึงข้อมูลโปรไฟล์ของผู้ใช้ LINE
       function getProfile() {
         liff.getProfile().then(profile => {
           // แสดงชื่อผู้ขอโอนจาก LINE profile
           document.getElementById("name").textContent = profile.displayName;
-          
-          // ซ่อนปุ่ม Login และแสดงฟอร์ม
-          document.getElementById("loginDiv").style.display = "none";
-          document.getElementById("transferFormDiv").style.display = "block";
         }).catch((err) => {
           console.error('Error getting profile', err);
           document.getElementById("name").textContent = "ไม่สามารถดึงข้อมูลโปรไฟล์ได้";
