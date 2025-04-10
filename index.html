@@ -7,8 +7,9 @@
     <style>
       /* ตั้งค่าพื้นหลังเป็นรูป bg.jpg ที่อัปโหลด */
       body {
-        background-image: url('https://raw.githubusercontent.com/Patriackwong/dismoneyhuay99/refs/heads/main/75fdf36af0a10a9c7f0cd803ac30bbdc.jpg');
+        background-image: url('https://raw.githubusercontent.com/Patriackwong/dismoneyhuay99/refs/heads/main/bg.jpg');
         background-size: cover; /* ทำให้รูปขยายเต็มจอ */
+        background-attachment: fixed; /* ทำให้รูปติดอยู่กับพื้นหลังเมื่อเลื่อนหน้า */
         font-family: Arial, sans-serif;
         color: #fff; /* เปลี่ยนสีตัวอักษรให้เด่น */
         margin: 0;
@@ -16,7 +17,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh; /* ทำให้ความสูงของ body ยืดหยุ่นและยาวพอ */
         background-position: center;
       }
 
