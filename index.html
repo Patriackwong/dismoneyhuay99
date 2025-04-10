@@ -5,24 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>บ้านหวย99 & LuckyStyle</title>
     <style>
-      /* เปลี่ยนพื้นหลังเป็นสีแดงประกายทองและภาพที่มีเงินและทอง */
+      /* ตั้งค่าพื้นหลังเป็นรูป bg.jpg ที่อัปโหลด */
       body {
-        background-image: url('https://raw.githubusercontent.com/Patriackwong/dismoneyhuay99/refs/heads/main/ornament-4315546_1280.png'); /* ใส่ URL ของรูปภาพที่มีสีแดงและทอง */
+        background-image: url('https://raw.githubusercontent.com/Patriackwong/dismoneyhuay99/refs/heads/main/bg.jpg');
         background-size: cover; /* ทำให้รูปขยายเต็มจอ */
         background-attachment: fixed; /* ทำให้รูปติดอยู่กับพื้นหลังเมื่อเลื่อนหน้า */
         font-family: Arial, sans-serif;
-        color: #fff; /* เปลี่ยนสีตัวอักษรให้เด่น */
+        color: #000; /* เปลี่ยนสีตัวอักษรให้เป็นสีดำ */
         margin: 0;
         padding: 0;
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 100vh; /* ทำให้ความสูงของ body ยืดหยุ่นและยาวพอ */
+        height: 100vh;
         background-position: center;
       }
 
       /* กล่องฟอร์มกลางหน้า */
-      
+      .form-container {
+        background-color: rgba(255, 255, 255, 0.9); /* ให้พื้นหลังของฟอร์มโปร่งแสง */
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 500px;
+        box-sizing: border-box;
+        text-align: center;
+      }
 
       /* การจัดวางโลโก้ทั้งสอง */
       .logo-container {
@@ -50,7 +59,7 @@
       }
 
       label {
-        font-size: 20px;
+        font-size: 22px; /* เพิ่มขนาดตัวอักษร */
         margin-bottom: 12px;
         display: block;
         font-weight: bold;
@@ -85,9 +94,10 @@
 
       /* ทำให้ข้อความดูเด่น */
       h2 {
-        font-size: 24px;
+        font-size: 28px; /* ขยายขนาดข้อความ */
         font-weight: bold;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* เพิ่มเงาให้หัวข้อ */
+        color: #000; /* ทำให้หัวข้อข้อความเด่น */
+        text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7); /* เพิ่มเงาให้หัวข้อ */
       }
     </style>
   </head>
