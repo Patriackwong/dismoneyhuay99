@@ -22,12 +22,12 @@
 
       /* กล่องฟอร์มกลางหน้า */
       .form-container {
-        background-color: rgba(255, 255, 255, 0.8); /* ให้พื้นหลังของฟอร์มโปร่งแสง */
+        background-color: rgba(255, 255, 255, 0.9); /* ให้พื้นหลังของฟอร์มโปร่งแสง */
         padding: 30px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         width: 100%;
-        max-width: 600px;
+        max-width: 500px;
         box-sizing: border-box;
         text-align: center;
       }
@@ -36,42 +36,46 @@
       .logo-container {
         display: flex;
         justify-content: center;
-        gap: 20px;
-        margin-bottom: 20px;
+        gap: 30px;
+        margin-bottom: 30px;
       }
 
       .logo-container img {
-        max-width: 100px;
+        width: 120px;  /* ปรับขนาดโลโก้ให้ใหญ่ขึ้น */
         height: auto;
+        border-radius: 50%; /* ให้โลโก้เป็นทรงกลม */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* เพิ่มเงาให้กับโลโก้ */
       }
 
       /* ฟอร์มและปุ่มขนาดใหญ่ขึ้น */
       input, select, button {
         width: 100%;
-        padding: 12px;
-        margin: 8px 0;
+        padding: 14px;
+        margin: 10px 0;
         border-radius: 8px;
         border: 1px solid #ccc;
         font-size: 16px;
       }
 
       label {
-        font-size: 18px;
-        margin-bottom: 8px;
+        font-size: 20px;
+        margin-bottom: 12px;
         display: block;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.7); /* เพิ่มเงาให้ข้อความ */
       }
 
       /* ปรับให้ใช้งานดีทั้งคอมพิวเตอร์และมือถือ */
       @media (max-width: 600px) {
         .form-container {
-          padding: 20px;
+          padding: 25px;
           max-width: 90%;
         }
         .logo-container {
-          gap: 10px;
+          gap: 20px;
         }
         .logo-container img {
-          max-width: 80px;
+          width: 100px; /* ปรับขนาดโลโก้ให้พอดีกับหน้าจอมือถือ */
         }
       }
 
@@ -80,10 +84,18 @@
         color: white;
         border: none;
         cursor: pointer;
+        font-weight: bold;
       }
 
       button:hover {
         background-color: #45a049;
+      }
+
+      /* ทำให้ข้อความดูเด่น */
+      h2 {
+        font-size: 24px;
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* เพิ่มเงาให้หัวข้อ */
       }
     </style>
   </head>
