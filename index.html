@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ขอโอนเงินจากการถูกหวย</title>
     <style>
-      /* ตั้งค่าพื้นหลังสีเขียวพาสเทล */
       body {
         background-color: #A8E6CF;
         font-family: Arial, sans-serif;
@@ -18,7 +17,6 @@
         height: 100vh;
       }
 
-      /* ตั้งค่า form ให้อยู่กึ่งกลางและขยายช่องกรอกข้อมูล */
       .form-container {
         background-color: white;
         padding: 30px;
@@ -30,7 +28,6 @@
         text-align: center;
       }
 
-      /* เพิ่มโลโก้ทั้งสองอัน */
       .logo-container {
         display: flex;
         justify-content: center;
@@ -43,7 +40,6 @@
         height: auto;
       }
 
-      /* ตั้งค่าขนาดฟอร์มและปุ่มให้ใหญ่ขึ้น */
       input, select, button {
         width: 100%;
         padding: 12px;
@@ -53,24 +49,20 @@
         font-size: 16px;
       }
 
-      /* ปรับขนาดตัวอักษร */
       label {
         font-size: 18px;
         margin-bottom: 8px;
         display: block;
       }
 
-      /* เพิ่มการจัดการกับขนาดหน้าจอมือถือ */
       @media (max-width: 600px) {
         .form-container {
           padding: 20px;
           max-width: 90%;
         }
-
         .logo-container {
           gap: 10px;
         }
-
         .logo-container img {
           max-width: 80px;
         }
@@ -91,8 +83,9 @@
   <body>
     <div class="form-container">
       <div class="logo-container">
-        <img src="path-to-your-first-logo.jpg" alt="Logo 1">
-        <img src="path-to-your-second-logo.jpg" alt="Logo 2">
+        <!-- เปลี่ยน path ของโลโก้ให้ถูกต้อง -->
+        <img src="https://github.com/username/repository-name/path-to-your-image/logo1.jpg" alt="Logo 1">
+        <img src="https://github.com/username/repository-name/path-to-your-image/logo2.jpg" alt="Logo 2">
       </div>
 
       <h2>กรอกข้อมูลการขอโอนเงินจากบ้านหวย99 & LuckyStyle</h2>
@@ -130,6 +123,9 @@
         <button type="submit">ส่งคำขอโอนเงิน</button>
       </form>
     </div>
+  </body>
+</html>
+
 
     <script>
       // เมื่อผู้ใช้เลือก "อื่น ๆ" ใน dropdown
