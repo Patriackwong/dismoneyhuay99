@@ -3,31 +3,36 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ขอโอนเงินจากการถูกหวย</title>
+    <title>บ้านหวย99 & LuckyStyle</title>
     <style>
+      /* ตั้งค่าพื้นหลังเป็นรูป bg.jpg ที่อัปโหลด */
       body {
-        background-color: #A8E6CF;
+        background-image: url('https://github.com/Patriackwong/dismoneyhuay99/blob/main/bg.jpg');
+        background-size: cover; /* ทำให้รูปขยายเต็มจอ */
         font-family: Arial, sans-serif;
-        color: #333;
+        color: #fff; /* เปลี่ยนสีตัวอักษรให้เด่น */
         margin: 0;
         padding: 0;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
+        background-position: center;
       }
 
+      /* กล่องฟอร์มกลางหน้า */
       .form-container {
-        background-color: white;
+        background-color: rgba(255, 255, 255, 0.8); /* ให้พื้นหลังของฟอร์มโปร่งแสง */
         padding: 30px;
         border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         width: 100%;
         max-width: 600px;
         box-sizing: border-box;
         text-align: center;
       }
 
+      /* การจัดวางโลโก้ทั้งสอง */
       .logo-container {
         display: flex;
         justify-content: center;
@@ -40,6 +45,7 @@
         height: auto;
       }
 
+      /* ฟอร์มและปุ่มขนาดใหญ่ขึ้น */
       input, select, button {
         width: 100%;
         padding: 12px;
@@ -55,6 +61,7 @@
         display: block;
       }
 
+      /* ปรับให้ใช้งานดีทั้งคอมพิวเตอร์และมือถือ */
       @media (max-width: 600px) {
         .form-container {
           padding: 20px;
@@ -83,9 +90,9 @@
   <body>
     <div class="form-container">
       <div class="logo-container">
-        <!-- เปลี่ยน path ของโลโก้ให้ถูกต้อง -->
-        <img src="https://github.com/username/repository-name/path-to-your-image/logo1.jpg" alt="Logo 1">
-        <img src="https://github.com/username/repository-name/path-to-your-image/logo2.jpg" alt="Logo 2">
+        <!-- เปลี่ยน URL ของโลโก้ให้เป็นของคุณ -->
+        <img src="https://github.com/Patriackwong/dismoneyhuay99/blob/main/logo1.jpg" alt="Logo 1">
+        <img src="https://github.com/Patriackwong/dismoneyhuay99/blob/main/logo2.jpg" alt="Logo 2">
       </div>
 
       <h2>กรอกข้อมูลการขอโอนเงินจากบ้านหวย99 & LuckyStyle</h2>
@@ -123,9 +130,6 @@
         <button type="submit">ส่งคำขอโอนเงิน</button>
       </form>
     </div>
-  </body>
-</html>
-
 
     <script>
       // เมื่อผู้ใช้เลือก "อื่น ๆ" ใน dropdown
