@@ -3,20 +3,22 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ขอโอนเงิน</title>
-    <script src="https://static.line-scdn.net/liff/2.1/sdk.js"></script>
+    <title>ขอถอนเงินจากการถูกหวย</title>
   </head>
   <body>
-    <h2>กรอกข้อมูลการขอโอนเงิน</h2>
-    <form id="transferForm">
+    <h2>กรอกข้อมูลการขอโอนเงินจากการบ้านหวย99&Luckystyle</h2>
+    <form id="lotteryForm" enctype="multipart/form-data">
       <label for="name">ชื่อผู้ขอโอน:</label><br>
-      <div id="name" name="name" required style="font-weight: bold;">กำลังดึงข้อมูล...</div><br><br>
+      <input type="text" id="name" name="name" required><br><br>
 
-      <label for="amount">จำนวนเงิน:</label><br>
+      <label for="lotteryType">ประเภทหวยที่ถูก:</label><br>
+      <input type="text" id="lotteryType" name="lotteryType" required><br><br>
+
+      <label for="winningNumber">เลขที่ถูก:</label><br>
+      <input type="text" id="winningNumber" name="winningNumber" required><br><br>
+
+      <label for="amount">จำนวนเงินที่ถูก:</label><br>
       <input type="number" id="amount" name="amount" required><br><br>
-
-      <label for="account">เลขบัญชีผู้รับ:</label><br>
-      <input type="text" id="account" name="account" required><br><br>
 
       <label for="bank">เลือกธนาคาร:</label><br>
       <select id="bank" name="bank" required>
@@ -33,39 +35,17 @@
         <input type="text" id="customBank" name="customBank"><br><br>
       </div>
 
+      <label for="account">เลขบัญชีผู้รับ:</label><br>
+      <input type="text" id="account" name="account" required><br><br>
+
+      <label for="receipt">แนบโพยที่ถูก:</label><br>
+      <input type="file" id="receipt" name="receipt" required><br><br>
+
       <button type="submit">ส่งคำขอโอนเงิน</button>
     </form>
 
     <script>
-      // เริ่มต้น LIFF
-      function initializeLiff() {
-        liff.init({ liffId: "2007224902-KBB1MQ26" })
-          .then(() => {
-            // ตรวจสอบว่าได้ล็อกอินแล้วหรือยัง
-            if (liff.isLoggedIn()) {
-              getProfile();  // ถ้าล็อกอินแล้วดึงข้อมูลโปรไฟล์
-            } else {
-              // ถ้าไม่ได้ล็อกอิน ให้ทำการล็อกอิน
-              liff.login();
-            }
-          })
-          .catch((err) => {
-            console.error('LIFF initialization failed', err);
-          });
-      }
-
-      // ดึงข้อมูลโปรไฟล์ของผู้ใช้ LINE
-      function getProfile() {
-        liff.getProfile().then(profile => {
-          // แสดงชื่อผู้ขอโอนจาก LINE profile
-          document.getElementById("name").textContent = profile.displayName;
-        }).catch((err) => {
-          console.error('Error getting profile', err);
-          document.getElementById("name").textContent = "ไม่สามารถดึงข้อมูลโปรไฟล์ได้";
-        });
-      }
-
-      // ฟังก์ชันเพื่อเปลี่ยนแปลงการแสดงผลช่องกรอกธนาคาร
+      // เมื่อผู้ใช้เลือก "อื่น ๆ" ใน dropdown
       document.getElementById('bank').addEventListener('change', function() {
         var bankSelect = document.getElementById('bank').value;
         if (bankSelect === 'other') {
@@ -75,43 +55,38 @@
         }
       });
 
-      // เมื่อกดส่งข้อมูลฟอร์ม
-      document.getElementById('transferForm').addEventListener('submit', function(event) {
+      // เมื่อฟอร์มถูกส่ง
+      document.getElementById('lotteryForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        var formData = new FormData(document.getElementById('transferForm'));
+        var formData = new FormData(document.getElementById('lotteryForm'));
         var data = {
-          'name': document.getElementById("name").textContent, // ชื่อผู้ขอโอนจาก LINE profile
+          'name': formData.get('name'),
+          'lotteryType': formData.get('lotteryType'),
+          'winningNumber': formData.get('winningNumber'),
           'amount': formData.get('amount'),
-          'account': formData.get('account'),
           'bank': formData.get('bank'),
-          'customBank': formData.get('customBank') // ใช้ค่าที่กรอกหากเลือก 'อื่น ๆ'
+          'customBank': formData.get('customBank'),
+          'account': formData.get('account'),
+          'receipt': formData.get('receipt') // แนบไฟล์โพย
         };
 
-        // สร้าง URL ของ Google Apps Script Web App และส่งข้อมูลผ่าน query parameters
-        var url = 'https://script.google.com/macros/s/AKfycbwMMLcw8Y8rK3aI6rhBztfw3cnJKM-rgiHVG_CG_ASbSX3Kn_NZok9rOlFZkReFXlG0Zw/exec' + 
-                  '?name=' + encodeURIComponent(data.name) + 
-                  '&amount=' + encodeURIComponent(data.amount) + 
-                  '&account=' + encodeURIComponent(data.account) +
-                  '&bank=' + encodeURIComponent(data.bank) + 
-                  (data.customBank ? '&customBank=' + encodeURIComponent(data.customBank) : ''); // ถ้ามีการกรอกชื่อธนาคารเอง
+        // สร้าง URL ของ Google Apps Script Web App และส่งข้อมูลผ่าน POST
+        var url = 'https://script.google.com/macros/s/AKfycbwMMLcw8Y8rK3aI6rhBztfw3cnJKM-rgiHVG_CG_ASbSX3Kn_NZok9rOlFZkReFXlG0Zw/exec';
 
-        // ส่งข้อมูลไปยัง Google Apps Script Web App ผ่าน GET request
-        fetch(url)
-          .then(response => response.json()) // แปลงข้อมูลที่ได้รับจาก Google Apps Script เป็น JSON
-          .then(responseData => {
-            alert(responseData.message); // แสดงข้อความตอบกลับจาก Google Apps Script
-          })
-          .catch(error => {
-            console.error('Error:', error); // หากเกิดข้อผิดพลาดจะไปที่นี้
-            alert('เกิดข้อผิดพลาดในการส่งข้อมูล');
-          });
+        fetch(url, {
+          method: 'POST',
+          body: formData // ส่งข้อมูลทั้งหมดรวมถึงไฟล์โพย
+        })
+        .then(response => response.json())
+        .then(responseData => {
+          alert(responseData.message); // แสดงข้อความตอบกลับจาก Google Apps Script
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('เกิดข้อผิดพลาดในการส่งข้อมูล');
+        });
       });
-
-      // เรียกใช้ฟังก์ชัน initializeLiff เมื่อโหลดหน้า
-      window.onload = function() {
-        initializeLiff();
-      }
     </script>
   </body>
 </html>
