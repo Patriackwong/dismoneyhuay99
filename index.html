@@ -6,8 +6,8 @@
     <title>ขอโอนเงินจากการถูกหวย</title>
   </head>
   <body>
-    <h2>กรอกข้อมูลการขอโอนเงินจากบ้านหวย99&Luckystyle</h2>
-    <form id="lotteryForm" enctype="multipart/form-data">
+    <h2>กรอกข้อมูลการขอโอนเงินจากการถูกหวย</h2>
+    <form id="lotteryForm">
       <label for="name">ชื่อผู้ขอโอน:</label><br>
       <input type="text" id="name" name="name" required><br><br>
 
@@ -38,9 +38,6 @@
       <label for="account">เลขบัญชีผู้รับ:</label><br>
       <input type="text" id="account" name="account" required><br><br>
 
-      <label for="receipt">แนบโพยที่ถูก:</label><br>
-  <input type="file" id="receipt" name="receipt" required><br><br>
-
       <button type="submit">ส่งคำขอโอนเงิน</button>
     </form>
 
@@ -67,8 +64,7 @@
           'amount': formData.get('amount'),
           'bank': formData.get('bank'),
           'customBank': formData.get('customBank'),
-          'account': formData.get('account'),
-          'receipt': formData.get('receipt') // แนบไฟล์โพย
+          'account': formData.get('account')
         };
 
         // สร้าง URL ของ Google Apps Script Web App และส่งข้อมูลผ่าน POST
@@ -76,7 +72,7 @@
 
         fetch(url, {
           method: 'POST',
-          body: formData // ส่งข้อมูลทั้งหมดรวมถึงไฟล์โพย
+          body: JSON.stringify(data) // ส่งข้อมูลทั้งหมด (ไม่มีไฟล์โพย)
         })
         .then(response => response.json())
         .then(responseData => {
