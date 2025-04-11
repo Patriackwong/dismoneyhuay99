@@ -105,7 +105,6 @@
   <body>
     <div class="form-container">
       <div class="logo-container">
-        <!-- เปลี่ยน URL ของโลโก้ให้เป็นของคุณ -->
         <img src="https://raw.githubusercontent.com/Patriackwong/dismoneyhuay99/refs/heads/main/logo1.jpg" alt="Logo 1">
         <img src="https://raw.githubusercontent.com/Patriackwong/dismoneyhuay99/refs/heads/main/logo2.jpg" alt="Logo 2">
       </div>
@@ -116,7 +115,18 @@
         <input type="text" id="name" name="name" required><br><br>
 
         <label for="lotteryType">ประเภทหวยที่ถูก:</label><br>
-        <input type="text" id="lotteryType" name="lotteryType" required><br><br>
+        <select id="lotteryType" name="lotteryType" required>
+          <option value="หวยไทย">หวยไทย</option>
+          <option value="หวยฮานอยพิเศษ">หวยฮานอยพิเศษ</option>
+          <option value="หวยฮานอยปรกติ">หวยฮานอยปรกติ</option>
+          <option value="หวยฮานอยVIP">หวยฮานอยVIP</option>
+          <option value="หวยลาวพัฒนา">หวยลาวพัฒนา</option>
+          <option value="หวยหุ้นนิเคอิเช้า">หวยหุ้นนิเคอิเช้า</option>
+          <option value="หวยหุ้นนิเคอิบ่าย">หวยหุ้นนิเคอิบ่าย</option>
+          <option value="หวยหุ้นดาวโจน">หวยหุ้นดาวโจน</option>
+          <option value="หวยหุ้นไทยเช้า">หวยหุ้นไทยเช้า</option>
+          <option value="หวยหุ้นไทยบ่าย">หวยหุ้นไทยบ่าย</option>
+        </select><br><br>
 
         <label for="winningNumber">เลขที่ถูก:</label><br>
         <input type="text" id="winningNumber" name="winningNumber" required><br><br>
@@ -147,14 +157,39 @@
     </div>
 
     <script>
-      // เมื่อผู้ใช้เลือก "อื่น ๆ" ใน dropdown
-      document.getElementById('bank').addEventListener('change', function() {
-        var bankSelect = document.getElementById('bank').value;
-        if (bankSelect === 'other') {
-          document.getElementById('customBankDiv').style.display = 'block'; // แสดงช่องกรอกชื่อธนาคาร
-        } else {
-          document.getElementById('customBankDiv').style.display = 'none'; // ซ่อนช่องกรอกชื่อธนาคาร
-        }
+      // เก็บข้อมูลการเลือกประเภทหวย
+      let lotteryTypeCounts = {
+        "หวยไทย": 0,
+        "หวยฮานอยพิเศษ": 0,
+        "หวยฮานอยปรกติ": 0,
+        "หวยฮานอยVIP": 0,
+        "หวยลาวพัฒนา": 0,
+        "หวยหุ้นนิเคอิเช้า": 0,
+        "หวยหุ้นนิเคอิบ่าย": 0,
+        "หวยหุ้นดาวโจน": 0,
+        "หวยหุ้นไทยเช้า": 0,
+        "หวยหุ้นไทยบ่าย": 0
+      };
+
+      // เมื่อผู้ใช้เลือกประเภทหวย
+      document.getElementById('lotteryType').addEventListener('change', function() {
+        let selectedLotteryType = this.value;
+        lotteryTypeCounts[selectedLotteryType] += 1;
+
+        // จัดลำดับประเภทหวยใหม่ตามจำนวนการเลือก
+        let sortedLotteryTypes = Object.keys(lotteryTypeCounts).sort(function(a, b) {
+          return lotteryTypeCounts[b] - lotteryTypeCounts[a];
+        });
+
+        // อัปเดต dropdown ด้วยลำดับที่ใหม่
+        let lotteryTypeSelect = document.getElementById('lotteryType');
+        lotteryTypeSelect.innerHTML = ""; // ลบตัวเลือกเดิมออก
+        sortedLotteryTypes.forEach(function(lotteryType) {
+          let option = document.createElement('option');
+          option.value = lotteryType;
+          option.textContent = lotteryType;
+          lotteryTypeSelect.appendChild(option);
+        });
       });
 
       // เมื่อฟอร์มถูกส่ง
@@ -172,16 +207,15 @@
           'account': formData.get('account')
         };
 
-        // สร้าง URL ของ Google Apps Script Web App และส่งข้อมูลผ่าน POST
         var url = 'https://script.google.com/macros/s/AKfycbwMMLcw8Y8rK3aI6rhBztfw3cnJKM-rgiHVG_CG_ASbSX3Kn_NZok9rOlFZkReFXlG0Zw/exec';
 
         fetch(url, {
           method: 'POST',
-          body: JSON.stringify(data) // ส่งข้อมูลทั้งหมด (ไม่มีไฟล์โพย)
+          body: JSON.stringify(data)
         })
         .then(response => response.json())
         .then(responseData => {
-          alert(responseData.message); // แสดงข้อความตอบกลับจาก Google Apps Script
+          alert(responseData.message); 
         })
         .catch(error => {
           console.error('Error:', error);
